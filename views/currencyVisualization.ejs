@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Visualization</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Подключение Chart.js -->
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <main class="visualization">
+        <h1>Currency Visualization</h1>
+        <p>Exchange rates relative to USD</p>
+        <canvas id="currencyChart" width="400" height="200"></canvas> <!-- Контейнер для графика -->
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/currencyVisualization.js"></script>
+ <!-- Подключение JS -->
+</body>
+</html>

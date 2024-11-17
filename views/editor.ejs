@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Editor Panel</title>
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <div class="editor-panel">
+        <h1>Editor Panel</h1>
+
+        <h2>Create New Portfolio Item</h2>
+        <form class="editor-form" action="/portfolio/create" method="POST">
+            <div class="form-group">
+                <label for="title">Title:</label>
+                <input type="text" id="title" name="title" placeholder="Enter title" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" placeholder="Enter description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="images">Images (URLs, comma-separated):</label>
+                <input type="text" id="images" name="images" placeholder="Enter image URLs separated by commas" required>
+            </div>
+            <button type="submit">Create Item</button>
+        </form>
+    </div>
+
+    <%- include('partials/footer') %>
+    <script src="/js/carousel.js"></script>
+
+</body>
+</html>

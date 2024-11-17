@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css"> <!-- Подключение стилей -->
+    <title>Portfolio with API</title>
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <%- include('partials/navbar') %>
+
+    <main class="main-content">
+        <!-- Левая часть: Портфолио -->
+        <section class="portfolio">
+            <h1>Portfolio Items</h1>
+            <div class="portfolio-container">
+                <% portfolioItems.forEach(item => { %>
+                    <div class="portfolio-card">
+                        <div class="carousel">
+                            <% item.images.forEach(image => { %>
+                                <div class="carousel-item">
+                                    <img src="<%= image %>" alt="Portfolio Image" class="carousel-image">
+                                </div>
+                            <% }) %>
+                            <button class="carousel-control prev">❮</button>
+                            <button class="carousel-control next">❯</button>
+                        </div>
+                        <h2 class="portfolio-title"><%= item.title %></h2>
+                        <p class="portfolio-description"><%= item.description %></p>
+                        <p class="portfolio-date">Created: <%= item.createdAt.toDateString() %></p>
+                        <% if (item.updatedAt) { %>
+                            <p class="portfolio-date">Last updated: <%= item.updatedAt.toDateString() %></p>
+                        <% } %>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+
+        <!-- Правая часть: API данные -->
+        <aside class="api-data">
+            <h2>API Data</h2>
+
+            <!-- Курсы валют -->
+            <section class="currency-data">
+                <h3>Currency Exchange Rates</h3>
+                <ul id="currencyList"></ul>
+            </section>
+
+            
+            <section class="crypto-data">
+                <h3>Top Cryptocurrencies</h3>
+                <ul id="cryptoList">
+                    <li>Loading crypto data...</li>
+                </ul>
+            </section>
+        </aside>
+    </main>
+
+    <!-- Подключение скриптов -->
+    <script src="/js/carousel.js"></script>
+    <script>
+        // Данные API для курсов валют
+        // Данные API для валют
+        fetch('/api/currency')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        const currencyList = document.getElementById('currencyList');
+        const rates = data.conversion_rates
+            ? Object.entries(data.conversion_rates).slice(0, 5)
+            : [];
+        if (rates.length === 0) {
+            currencyList.textContent = 'No currency data available.';
+        } else {
+            rates.forEach(([currency, rate]) => {
+                const li = document.createElement('li');
+                li.textContent = `${currency}: ${rate}`;
+                currencyList.appendChild(li);
+            });
+        }
+    })
+    .catch(error => console.error('Error fetching currency data:', error));
+
+
+// Загрузка данных криптовалют
+fetch('/api/crypto')
+    .then(response => response.json())
+    .then(data => {
+        const cryptoList = document.getElementById('cryptoList');
+        cryptoList.innerHTML = ''; // Очистка списка
+        if (!data || data.length === 0) {
+            cryptoList.textContent = 'No crypto data available.';
+        } else {
+            data.forEach(crypto => {
+                const li = document.createElement('li');
+                li.textContent = `${crypto.name} (${crypto.symbol.toUpperCase()}): $${crypto.current_price.toFixed(2)}`;
+                cryptoList.appendChild(li);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error fetching crypto data:', error);
+        const cryptoList = document.getElementById('cryptoList');
+        cryptoList.textContent = 'Failed to load crypto data.';
+    });
+
+
+
+    </script>
+    <script src="/js/carousel.js"></script>
+    <%- include('partials/footer') %>
+</body>
+</html>

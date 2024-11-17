@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Admin Panel</title>
+</head>
+<body>
+    <%- include('partials/navbar') %>
+
+    <main class="admin-panel">
+        <h1>Admin Panel</h1>
+
+        <!-- Форма создания нового элемента -->
+        <section class="create-portfolio-item">
+            <h2>Create New Portfolio Item</h2>
+            <form action="/portfolio/create" method="POST" class="portfolio-form">
+                <div class="form-group">
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" placeholder="Enter title" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" placeholder="Enter description" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="images">Images (URLs, comma-separated):</label>
+                    <input type="text" id="images" name="images" placeholder="Enter image URLs separated by commas" required>
+                </div>
+                <button type="submit" class="btn-submit">Create Item</button>
+            </form>
+        </section>
+
+        <!-- Список существующих элементов -->
+        <section class="existing-portfolio-items">
+            <h2>Existing Portfolio Items</h2>
+            <div class="portfolio-container">
+                <% portfolioItems.forEach(item => { %>
+                    <div class="portfolio-card">
+                        <h3><%= item.title %></h3>
+                        <div class="carousel">
+                            <% item.images.forEach((image, index) => { %>
+                                <div class="carousel-item">
+                                    <img src="<%= image %>" alt="Portfolio Image <%= index + 1 %>" class="carousel-image">
+                                </div>
+                            <% }) %>
+                        </div>
+                        <p><%= item.description %></p>
+
+                        <!-- Форма обновления -->
+                        <form action="/portfolio/update/<%= item._id %>" method="POST" class="portfolio-update-form">
+                            <div class="form-group">
+                                <label for="title-<%= item._id %>">Title:</label>
+                                <input type="text" id="title-<%= item._id %>" name="title" value="<%= item.title %>" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description-<%= item._id %>">Description:</label>
+                                <textarea id="description-<%= item._id %>" name="description" required><%= item.description %></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="images-<%= item._id %>">Images (URLs, comma-separated):</label>
+                                <input type="text" id="images-<%= item._id %>" name="images" value="<%= item.images.join(', ') %>" required>
+                            </div>
+                            <button type="submit" class="btn-update">Update</button>
+                        </form>
+
+                        <!-- Форма удаления -->
+                        <form action="/portfolio/delete/<%= item._id %>" method="POST" class="portfolio-delete-form">
+                            <button type="submit" class="btn-delete">Delete</button>
+                        </form>
+                    </div>
+                <% }) %>
+            </div>
+        </section>
+    </main>
+
+    <%- include('partials/footer') %>
+    <script src="/js/carousel.js"></script>
+
+</body>
+</html>

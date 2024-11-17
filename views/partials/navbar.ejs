@@ -1,0 +1,22 @@
+<nav>
+    <ul>
+        <li><a href="/">Home</a></li>
+
+        <% if (!user) { %>
+            <!-- Для гостей -->
+            <li><a href="/login">Login</a></li>
+            <li><a href="/register">Register</a></li>
+        <% } else { %>
+            <!-- Для авторизованных -->
+            <% if (user.role === 'admin') { %>
+                <li><a href="/admin">Admin Panel</a></li>
+            <% } else if (user.role === 'editor') { %>
+                <li><a href="/editor/panel">Editor Panel</a></li>
+            <% } %>
+            <li><a href="/logout">Logout</a></li>
+        <% } %>
+        <!-- Визуализации -->
+        <li><a href="/visualization/currency">Currency Visualization</a></li>
+        <li><a href="/visualization/crypto">Crypto Visualization</a></li>
+    </ul>
+</nav>
